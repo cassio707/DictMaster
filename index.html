@@ -83,20 +83,95 @@
             transform: translateX(30px);
             background: #1f2937;
         }
+
+        /* Modal styles */
+        .modal-overlay {
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-width: none;
+                margin: 0 2.5%;
+            }
+
+            /* اصلاح grid برای موبایل */
+            .grid {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+
+            .dictionary-item {
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .grid {
+                display: grid !important;
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            }
+        }
     </style>
 </head>
 
 <body
     class="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 min-h-screen dark:text-gray-100">
+
     <!-- Header -->
-    <header class="bg-white dark:bg-gray-800 shadow-lg border-b-4 border-indigo-500 dark:border-indigo-400">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
+    <header
+        class="bg-white dark:bg-gray-800 shadow-lg border-b-4 border-indigo-500 dark:border-indigo-400 sticky top-0 z-40">
+        <div class="container mx-auto px-4 sm:px-6 py-4">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div class="flex-1 text-center">
-                    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">
                         📚 دیکشنری انگلیسی به فارسی
                     </h1>
-                    <p class="text-gray-600 dark:text-gray-300 mt-2">مجموعه‌ای کامل از ترجمه‌های انگلیسی به فارسی</p>
+                    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-2">مجموعه‌ای کامل از ترجمه‌های
+                        انگلیسی به فارسی</p>
                 </div>
 
                 <!-- Theme Toggle Button -->
@@ -110,24 +185,25 @@
     </header>
 
     <!-- Upload Section -->
-    <div class="container mx-auto px-6 py-6">
-        <div id="uploadSection" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
-            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 text-center">
+    <div class="container mx-auto px-4 sm:px-6 py-6">
+        <div id="uploadSection" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 mb-6">
+            <h2 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 text-center">
                 📁 آپلود فایل اکسل
             </h2>
 
             <!-- File Upload Area -->
-            <div id="uploadArea" class="upload-area dark:bg-gray-700 rounded-lg p-8 text-center cursor-pointer">
+            <div id="uploadArea" class="upload-area dark:bg-gray-700 rounded-lg p-6 sm:p-8 text-center cursor-pointer">
                 <input type="file" id="fileInput" accept=".xlsx,.xls" class="hidden">
                 <div class="mb-4">
-                    <svg class="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none"
+                    <svg class="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
                         </path>
                     </svg>
                 </div>
-                <p class="text-lg text-gray-600 dark:text-gray-300 mb-2">فایل اکسل خود را اینجا بکشید یا کلیک کنید</p>
+                <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-2">فایل اکسل خود را اینجا بکشید یا
+                    کلیک کنید</p>
                 <p class="text-sm text-gray-500 dark:text-gray-400">ستون اول: انگلیسی، ستون دوم: فارسی</p>
                 <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">فرمت‌های پشتیبانی شده: .xlsx, .xls</p>
             </div>
@@ -146,7 +222,7 @@
 
         <!-- Search Section -->
         <div id="searchSection" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6 hidden">
-            <div class="relative">
+            <div class="relative mb-4">
                 <input type="text" id="searchInput" placeholder="جستجو در ترجمه‌ها..."
                     class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
                 <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -157,17 +233,25 @@
                     </svg>
                 </div>
             </div>
-            <div class="mt-2 text-sm text-gray-500 dark:text-gray-400 text-center flex justify-between items-center">
+
+            <div
+                class="flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
                 <span><span id="totalCount">0</span> مورد یافت شد</span>
-                <button id="exportBtn"
-                    class="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition-colors">
-                    📥 خروجی اکسل
-                </button>
+                <div class="flex gap-2">
+                    <button id="randomWordsBtn"
+                        class="bg-purple-500 hover:bg-purple-600 dark:bg-purple-600 dark:hover:bg-purple-700 text-white px-3 py-1 rounded text-xs transition-colors">
+                        🎲 کلمات تصادفی
+                    </button>
+                    <button id="exportBtn"
+                        class="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition-colors">
+                        📥 خروجی اکسل
+                    </button>
+                </div>
             </div>
         </div>
 
         <!-- Dictionary Items Container -->
-        <div id="dictionaryContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 hidden">
+        <div id="dictionaryContainer" class="grid gap-4 hidden">
             <!-- Items will be populated here by JavaScript -->
         </div>
 
@@ -190,6 +274,41 @@
                 </svg>
                 <h3 class="text-xl font-semibold mb-2">نتیجه‌ای یافت نشد</h3>
                 <p>لطفاً کلمه کلیدی دیگری جستجو کنید</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Random Words Modal -->
+    <div id="randomModal"
+        class="fixed inset-0 bg-black bg-opacity-50 modal-overlay z-50 hidden flex items-center justify-center">
+        <div
+            class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                    🎲 کلمات تصادفی
+                </h3>
+                <button id="closeModal"
+                    class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div id="randomWordsContainer" class="space-y-4">
+                <!-- Random words will be populated here -->
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                <button id="generateNewWords"
+                    class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    🔄 کلمات جدید
+                </button>
+                <button id="copyAllRandom"
+                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    📋 کپی همه
+                </button>
             </div>
         </div>
     </div>
@@ -220,6 +339,68 @@
                 document.documentElement.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
             }
+        }
+
+        // Random words functionality
+        function getRandomWords(count = 5) {
+            if (dictionaryData.length === 0) return [];
+
+            const shuffled = [...dictionaryData].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, Math.min(count, dictionaryData.length));
+        }
+
+        function createRandomWordItem(item, index) {
+            return `
+ <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border-r-4 border-purple-400 dark:border-purple-500">
+ <div class="flex justify-between items-start mb-2">
+ <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-100" dir="ltr">${item.english}</h4>
+ <span class="text-xs text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded-full">#${index + 1}</span>
+ </div>
+ <p class="text-purple-600 dark:text-purple-400 font-medium">${item.persian}</p>
+ <button onclick="copyToClipboard('${item.english.replace(/'/g, "\\'")}', '${item.persian.replace(/'/g, "\\'")}')" 
+ class="mt-2 text-xs text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 transition-colors">
+ 📋 کپی
+ </button>
+ </div>
+ `;
+        }
+
+        function showRandomWords() {
+            const modal = document.getElementById('randomModal');
+            const container = document.getElementById('randomWordsContainer');
+
+            if (dictionaryData.length === 0) {
+                showToast('ابتدا فایل اکسل را بارگذاری کنید', 'error');
+                return;
+            }
+
+            const randomWords = getRandomWords(5);
+            container.innerHTML = randomWords.map((item, index) => createRandomWordItem(item, index)).join('');
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideRandomModal() {
+            const modal = document.getElementById('randomModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function copyAllRandomWords() {
+            const container = document.getElementById('randomWordsContainer');
+            const items = container.querySelectorAll('.bg-gray-50, .dark\\:bg-gray-700');
+
+            let allText = 'کلمات تصادفی:\n\n';
+            items.forEach((item, index) => {
+                const english = item.querySelector('h4').textContent;
+                const persian = item.querySelector('p').textContent;
+                allText += `${index + 1}. ${english} : ${persian}\n`;
+            });
+
+            navigator.clipboard.writeText(allText).then(() => {
+                showToast('همه کلمات کپی شدند!', 'success');
+            });
         }
 
         // File upload handling
@@ -326,12 +507,12 @@
 
         function createDictionaryItem(item, index) {
             return `
- <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg dark:hover:shadow-xl transition-shadow duration-300 p-4 border-r-4 border-indigo-400 dark:border-indigo-500 dictionary-item" data-index="${index}">
+ <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg dark:hover:shadow-xl transition-shadow duration-300 p-4 border-r-4 border-indigo-400 dark:border-indigo-500 dictionary-item w-full" data-index="${index}">
  <div class="mb-3">
- <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2 leading-relaxed" dir="ltr">
+ <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2 leading-relaxed break-words" dir="ltr">
  ${item.english}
  </h3>
- <p class="text-indigo-600 dark:text-indigo-400 font-medium text-base leading-relaxed">
+ <p class="text-indigo-600 dark:text-indigo-400 font-medium text-base leading-relaxed break-words">
  ${item.persian}
  </p>
  </div>
@@ -341,7 +522,7 @@
  </span>
  <button onclick="copyToClipboard('${item.english.replace(/'/g, "\\'")}', '${item.persian.replace(/'/g, "\\'")}')" class="text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+ <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
  </svg>
  </button>
  </div>
@@ -426,10 +607,45 @@
             const searchInput = document.getElementById('searchInput');
             const exportBtn = document.getElementById('exportBtn');
             const themeToggle = document.getElementById('themeToggle');
+            const randomWordsBtn = document.getElementById('randomWordsBtn');
+            const closeModal = document.getElementById('closeModal');
+            const generateNewWords = document.getElementById('generateNewWords');
+            const copyAllRandom = document.getElementById('copyAllRandom');
+            const randomModal = document.getElementById('randomModal');
 
             // Theme toggle functionality
             if (themeToggle) {
                 themeToggle.addEventListener('click', toggleTheme);
+            }
+
+            // Random words functionality
+            if (randomWordsBtn) {
+                randomWordsBtn.addEventListener('click', showRandomWords);
+            }
+
+            if (closeModal) {
+                closeModal.addEventListener('click', hideRandomModal);
+            }
+
+            if (generateNewWords) {
+                generateNewWords.addEventListener('click', () => {
+                    const container = document.getElementById('randomWordsContainer');
+                    const randomWords = getRandomWords(5);
+                    container.innerHTML = randomWords.map((item, index) => createRandomWordItem(item, index)).join('');
+                });
+            }
+
+            if (copyAllRandom) {
+                copyAllRandom.addEventListener('click', copyAllRandomWords);
+            }
+
+            // Close modal when clicking outside
+            if (randomModal) {
+                randomModal.addEventListener('click', (e) => {
+                    if (e.target === randomModal) {
+                        hideRandomModal();
+                    }
+                });
             }
 
             // Search functionality
@@ -444,11 +660,15 @@
                 exportBtn.addEventListener('click', exportToExcel);
             }
 
-            // Add keyboard shortcut for search
+            // Add keyboard shortcuts
             document.addEventListener('keydown', (e) => {
                 if (e.ctrlKey && e.key === 'f' && searchInput) {
                     e.preventDefault();
                     searchInput.focus();
+                }
+
+                if (e.key === 'Escape') {
+                    hideRandomModal();
                 }
             });
 
