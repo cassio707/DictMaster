@@ -699,9 +699,15 @@
         }
 
         // Delete word functionality
-        function deleteWord(index) {
-            if (confirm('Are you sure you want to delete this word?')) {
-                dictionaryData.splice(index, 1);
+        function deleteWord(originalIndex) {
+            // Find the actual index in dictionaryData
+            const item = filteredData[originalIndex];
+            const actualIndex = dictionaryData.findIndex(dictItem =>
+                dictItem.english === item.english && dictItem.persian === item.persian
+            );
+
+            if (actualIndex !== -1 && confirm('Are you sure you want to delete this word?')) {
+                dictionaryData.splice(actualIndex, 1);
                 saveData();
                 applyFilters();
                 showToast('Word deleted successfully!', 'success');
@@ -721,21 +727,21 @@
             const difficultyInfo = difficultyLevels[difficulty];
 
             return `
- <div class="difficulty-${difficulty} rounded-lg p-4 border-r-4 dark:border-purple-500">
- <div class="flex justify-between items-start mb-2">
- <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-100" dir="ltr">${item.english}</h4>
- <div class="flex items-center gap-2">
- <span class="difficulty-btn ${difficulty}">${difficultyInfo.emoji} ${difficultyInfo.name}</span>
- <span class="text-xs text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded-full">#${index + 1}</span>
- </div>
- </div>
- <p class="text-purple-600 dark:text-purple-400 font-medium">${item.persian}</p>
- <button onclick="copyToClipboard('${item.english.replace(/'/g, "\\'")}', '${item.persian.replace(/'/g, "\\'")}')" 
- class="mt-2 text-xs text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 transition-colors">
- 📋 کپی
- </button>
- </div>
- `;
+                <div class="difficulty-${difficulty} rounded-lg p-4 border-r-4 dark:border-purple-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-100" dir="ltr">${item.english}</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="difficulty-btn ${difficulty}">${difficultyInfo.emoji} ${difficultyInfo.name}</span>
+                            <span class="text-xs text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded-full">#${index + 1}</span>
+                        </div>
+                    </div>
+                    <p class="text-purple-600 dark:text-purple-400 font-medium">${item.persian}</p>
+                    <button onclick="copyToClipboard('${item.english.replace(/'/g, "\\'")}', '${item.persian.replace(/'/g, "\\'")}')" 
+                        class="mt-2 text-xs text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 transition-colors">
+                        📋 کپی
+                    </button>
+                </div>
+            `;
         }
 
         function showRandomWords() {
@@ -885,17 +891,30 @@
         }
 
         // Set difficulty function
-        function setDifficulty(index, difficulty) {
-            dictionaryData[index].difficulty = difficulty;
-            saveData();
-            applyFilters();
-            showToast(`Difficulty set to ${difficultyLevels[difficulty].name}`, 'success');
+        function setDifficulty(originalIndex, difficulty) {
+            // Find the actual index in dictionaryData
+            const item = filteredData[originalIndex];
+            const actualIndex = dictionaryData.findIndex(dictItem =>
+                dictItem.english === item.english && dictItem.persian === item.persian
+            );
+
+            if (actualIndex !== -1) {
+                dictionaryData[actualIndex].difficulty = difficulty;
+                saveData();
+                applyFilters();
+                showToast(`Difficulty set to ${difficultyLevels[difficulty].name}`, 'success');
+            }
         }
 
         // Modify createDictionaryItem function
         function createDictionaryItem(item, index) {
             const difficulty = item.difficulty || 'default';
             const difficultyInfo = difficultyLevels[difficulty];
+
+            // Find the actual index in dictionaryData for proper operations
+            const actualIndex = dictionaryData.findIndex(dictItem =>
+                dictItem.english === item.english && dictItem.persian === item.persian
+            );
 
             return `
  <div class="dictionary-item ${item.isRead ? 'read' : ''} difficulty-${difficulty} bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-4 border-r-4 w-full" data-index="${index}">
@@ -933,7 +952,7 @@
  </div>
  <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
  <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
- #${index + 1}
+ #${actualIndex + 1}
  </span>
  <button onclick="copyToClipboard('${item.english.replace(/'/g, "\\'")}', '${item.persian.replace(/'/g, "\\'")}')" class="text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1039,10 +1058,18 @@
         }
 
         // Add read status toggle function
-        function toggleReadStatus(index) {
-            dictionaryData[index].isRead = !dictionaryData[index].isRead;
-            saveData();
-            applyFilters();
+        function toggleReadStatus(originalIndex) {
+            // Find the actual index in dictionaryData
+            const item = filteredData[originalIndex];
+            const actualIndex = dictionaryData.findIndex(dictItem =>
+                dictItem.english === item.english && dictItem.persian === item.persian
+            );
+
+            if (actualIndex !== -1) {
+                dictionaryData[actualIndex].isRead = !dictionaryData[actualIndex].isRead;
+                saveData();
+                applyFilters();
+            }
         }
 
         // Add filter functionality
